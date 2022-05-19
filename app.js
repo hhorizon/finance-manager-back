@@ -6,7 +6,7 @@ const cors = require("cors");
 const authRouter = require("./routes/api/auth");
 const usersRouter = require("./routes/api/users");
 const contactsRouter = require("./routes/api/contacts");
-const limiter = require("./middlewares");
+// const limiter = require("./middlewares");
 
 const app = express();
 
@@ -24,7 +24,6 @@ app.use("/api/users", usersRouter);
 app.use("/api/contacts", contactsRouter);
 
 app.use((req, res) => {
-  console.log("qwe");
   res.status(404).json({ message: "Not found" });
 });
 
