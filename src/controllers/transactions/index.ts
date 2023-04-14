@@ -6,13 +6,11 @@ export const addTransaction = async (req: Request, res: Response) => {
   const { body, user } = req;
   const transaction = await transactionService.create(body, user);
 
-  return res
-    .status(HttpCode.CREATED)
-    .json({
-      status: "success",
-      code: HttpCode.CREATED,
-      payload: { transaction },
-    });
+  return res.status(HttpCode.CREATED).json({
+    status: "success",
+    code: HttpCode.CREATED,
+    payload: { transaction },
+  });
 };
 
 export const getTransactionById = async (req: Request, res: Response) => {
@@ -54,43 +52,6 @@ export const updateTransaction = async (req: Request, res: Response) => {
   });
 };
 
-// export const updateFavoriteStatusContact = async (
-//   req: Request,
-//   res: Response,
-// ) => {
-//   if (req.body.favorite === undefined) {
-//     return res.status(HttpCode.BAD_REQUEST).json({
-//       status: "error",
-//       code: HttpCode.BAD_REQUEST,
-//       message: "missing field favorite",
-//     });
-//   }
-
-//   if (typeof req.body.favorite !== "boolean") {
-//     return res.status(HttpCode.BAD_REQUEST).json({
-//       status: "error",
-//       code: HttpCode.BAD_REQUEST,
-//       message: "field 'favorite' must be boolean type",
-//     });
-//   }
-
-//   const { contactId } = req.params;
-//   const { favorite } = req.body;
-//   const { user } = req;
-
-//   const contact = await transactionService.updateFavoriteStatus(
-//     contactId,
-//     favorite,
-//     user,
-//   );
-
-//   return res.json({
-//     status: "success",
-//     code: HttpCode.OK,
-//     payload: { contact },
-//   });
-// };
-
 export const removeTransaction = async (req: Request, res: Response) => {
   const { transactionId } = req.params;
   const { user } = req;
@@ -99,7 +60,7 @@ export const removeTransaction = async (req: Request, res: Response) => {
   return res.json({
     status: "success",
     code: HttpCode.OK,
-    message: "contact deleted",
+    message: "transaction deleted",
     payload: { transaction },
   });
 };

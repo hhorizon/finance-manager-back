@@ -35,9 +35,9 @@ const transactionSchema = new Schema<TransactionDocument>(
 
 transactionSchema.plugin(mongoosePaginate);
 
-const Contact = model<TransactionDocument, PaginateModel<TransactionDocument>>(
-  "transactions",
-  transactionSchema,
-);
+const Transaction = model<
+  TransactionDocument,
+  PaginateModel<TransactionDocument>
+>("transactions", transactionSchema);
 
-export default Contact;
+export default Transaction;

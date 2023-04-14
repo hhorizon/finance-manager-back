@@ -3,7 +3,6 @@ import {
   getTransactionById,
   getAllTransactions,
   updateTransaction,
-  //   updateFavoriteStatusContact,
   removeTransaction,
 } from "../../repository/transactions";
 import { CustomError } from "../../middlewares";
@@ -37,22 +36,6 @@ class TransactionService {
     }
     return transaction;
   }
-
-  //   async updateFavoriteStatus(
-  //     contactId: string,
-  //     favorite: boolean,
-  //     user: UserDocument,
-  //   ) {
-  //     const contact = await updateFavoriteStatusContact(
-  //       contactId,
-  //       favorite,
-  //       user,
-  //     );
-  //     if (!contact) {
-  //       throw new CustomError(HttpCode.NOT_FOUND, "Not found");
-  //     }
-  //     return contact;
-  //   }
 
   async remove(transactionId: string, user: UserDocument) {
     const transaction = await removeTransaction(transactionId, user);

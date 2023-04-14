@@ -5,7 +5,6 @@ import {
   getTransactionById,
   getAllTransactions,
   updateTransaction,
-  //   updateFavoriteStatusContact,
   removeTransaction,
 } from "../../controllers/transactions";
 import { transactionSchema } from "../../schemas/transactionValidationSchemes";
@@ -32,11 +31,5 @@ router.put(
   validateBody(transactionSchema),
   errorWrapper(updateTransaction),
 );
-
-// router.patch(
-//   "/:contactId/favorite",
-//   guard,
-//   errorWrapper(updateFavoriteStatusContact),
-// );
 
 export default router;

@@ -54,23 +54,6 @@ export const updateTransaction = async (
   return result;
 };
 
-// export const updateFavoriteStatusContact = async (
-//   contactId: string,
-//   favorite: boolean,
-//   user: UserDocument,
-// ) => {
-//   const result = await Transaction.findOneAndUpdate(
-//     {
-//       _id: contactId,
-//       owner: user.id,
-//     },
-//     { favorite },
-//     { new: true },
-//   );
-
-//   return result;
-// };
-
 // delete transaction
 export const removeTransaction = async (
   transactionId: string,

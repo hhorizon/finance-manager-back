@@ -5,21 +5,12 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  subscription: string;
+  subscription: Subscription;
   avatarURL: string;
   token: string | null;
   verify: boolean;
   verificationToken: string;
   isValidPassword: (passwod: string) => Promise<boolean>;
-}
-
-export interface IContact {
-  name: string;
-  email: string;
-  password: string;
-  phone: string;
-  favorite: boolean;
-  owner: ObjectId;
 }
 
 export interface ITransaction {
@@ -32,7 +23,6 @@ export interface ITransaction {
 }
 
 export interface UserDocument extends Document, IUser {}
-export interface ContactDocument extends Document, IContact {}
 export interface TransactionDocument extends Document, ITransaction {}
 
 export type UserCredential = {
