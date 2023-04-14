@@ -22,9 +22,18 @@ export interface IContact {
   owner: ObjectId;
 }
 
-export interface UserDocument extends Document, IUser {}
+export interface ITransaction {
+  type: "incoming" | "spending";
+  category: string;
+  sum: number;
+  date: Date;
+  owner: ObjectId;
+  comment: string;
+}
 
+export interface UserDocument extends Document, IUser {}
 export interface ContactDocument extends Document, IContact {}
+export interface TransactionDocument extends Document, ITransaction {}
 
 export type UserCredential = {
   email: string;
