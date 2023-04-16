@@ -23,10 +23,10 @@ class TransactionService {
     return transaction;
   }
 
-  async getAll(user: UserDocument) {
-    const transaction = await getAllTransactions(user);
+  async getAll(user: UserDocument, page: number) {
+    const transactions = await getAllTransactions(user, page);
 
-    return transaction;
+    return transactions;
   }
 
   async update(transactionId: string, body: ITransaction, user: UserDocument) {

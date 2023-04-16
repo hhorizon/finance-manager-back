@@ -11,6 +11,7 @@ export const transactionSchema = Joi.object({
     .messages({ "any.required": "missing required category field" }),
 
   sum: Joi.number()
+    .min(0.5)
     .required()
     .messages({ "any.required": "missing required sum field" }),
 

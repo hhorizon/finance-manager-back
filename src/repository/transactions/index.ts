@@ -24,12 +24,12 @@ export const getTransactionById = async (
   return result;
 };
 
-export const getAllTransactions = async (user: UserDocument) => {
+export const getAllTransactions = async (user: UserDocument, page: number) => {
   const {
     docs: transaction,
     totalDocs: totalTransaction,
     ...rest
-  } = await Transaction.paginate({ owner: user.id });
+  } = await Transaction.paginate({ owner: user.id }, { page });
 
   return { transaction, totalTransaction, ...rest };
 };

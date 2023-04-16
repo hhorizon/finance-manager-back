@@ -27,12 +27,13 @@ export const getTransactionById = async (req: Request, res: Response) => {
 
 export const getAllTransactions = async (req: Request, res: Response) => {
   const { query, user } = req;
-  const transaction = await transactionService.getAll(user);
+  const { page } = query as any;
+  const transactions = await transactionService.getAll(user, page);
 
   return res.json({
     status: "success",
     code: HttpCode.OK,
-    payload: { ...transaction },
+    payload: { ...transactions },
   });
 };
 
