@@ -18,6 +18,10 @@ const userSchema = new Schema<UserDocument>(
       type: String,
       required: [true, "Password is required"],
     },
+    balance: {
+      type: Number || null,
+      default: null,
+    },
     subscription: {
       type: String,
       enum: ["starter", "pro", "business"],

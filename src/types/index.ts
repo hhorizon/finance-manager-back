@@ -5,6 +5,7 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
+  balance: number | null;
   subscription: Subscription;
   avatarURL: string;
   token: string | null;
@@ -18,6 +19,7 @@ export interface ITransaction {
   category: string;
   sum: number;
   date: Date;
+  balance: number;
   owner: ObjectId;
   comment: string;
 }

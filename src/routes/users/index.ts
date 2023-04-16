@@ -1,6 +1,13 @@
 import express from "express";
-import { updateUserSubscription, updateAvatar } from "../../controllers/users";
-import { subscriprionSchema } from "../../schemas/userValidationSchemes";
+import {
+  updateUserSubscription,
+  updateAvatar,
+  updateUserBalance,
+} from "../../controllers/users";
+import {
+  subscriprionSchema,
+  balanceSchema,
+} from "../../schemas/userValidationSchemes";
 import {
   errorWrapper,
   validateBody,
@@ -24,6 +31,13 @@ router.patch(
   guard,
   validateBody(subscriprionSchema),
   errorWrapper(updateUserSubscription),
+);
+
+router.patch(
+  "/balance",
+  guard,
+  validateBody(balanceSchema),
+  errorWrapper(updateUserBalance),
 );
 
 export default router;

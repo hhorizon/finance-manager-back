@@ -28,3 +28,16 @@ export const updateAvatar = async (req: Request, res: Response) => {
     payload: { avatarURL },
   });
 };
+
+export const updateUserBalance = async (req: Request, res: Response) => {
+  const { balance } = await userService.updateBalance(
+    req.user.id,
+    req.body.balance,
+  );
+
+  return res.json({
+    status: "success",
+    code: HttpCode.OK,
+    payload: { balance },
+  });
+};

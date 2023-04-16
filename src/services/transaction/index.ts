@@ -5,13 +5,25 @@ import {
   updateTransaction,
   removeTransaction,
 } from "../../repository/transactions";
+import { updateUserBalance } from "../../repository/users";
 import { CustomError } from "../../middlewares";
 import { HttpCode } from "../../libs/constants";
 import { ITransaction, UserDocument } from "../../types";
 
 class TransactionService {
   async create(body: ITransaction, user: UserDocument) {
-    const transaction = await addTransaction(body, user);
+    const newBalance =
+      body.type === "incoming"
+        ? Number(user.balance) + body.sum
+        : Number(user.balance) - body.sum;
+
+    await updateUserBalance(user._id, newBalance);
+
+    const transaction = await addTransaction(
+      { ...body, balance: newBalance },
+      user,
+    );
+
     return transaction;
   }
 

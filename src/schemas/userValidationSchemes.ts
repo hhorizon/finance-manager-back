@@ -24,3 +24,9 @@ export const emailSchema = Joi.object({
     .required()
     .messages({ "any.required": "missing required email field" }),
 });
+
+export const balanceSchema = Joi.object({
+  balance: Joi.number()
+    .required()
+    .messages({ "any.required": "missing required balance field" }),
+});

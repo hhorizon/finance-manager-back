@@ -6,7 +6,10 @@ export const addTransaction = async (
   body: ITransaction,
   user: UserDocument,
 ) => {
-  const result = await Transaction.create({ ...body, owner: user.id });
+  const result = await Transaction.create({
+    ...body,
+    owner: user.id,
+  });
 
   return result;
 };
@@ -26,12 +29,17 @@ export const getTransactionById = async (
 
 export const getAllTransactions = async (user: UserDocument, page: number) => {
   const {
-    docs: transaction,
+    docs: transactions,
     totalDocs: totalTransaction,
     ...rest
-  } = await Transaction.paginate({ owner: user.id }, { page });
+  } = await Transaction.paginate(
+    { owner: user.id },
+    { page, sort: { date: 1 } },
+  );
 
-  return { transaction, totalTransaction, ...rest };
+  const { balance } = user;
+
+  return { balance, transactions, totalTransaction, ...rest };
 };
 
 // update transaction

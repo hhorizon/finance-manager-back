@@ -56,9 +56,9 @@ class AuthService {
 
     await updateUserToken(user.id, token);
 
-    const { name, subscription } = user;
+    const { name, balance, subscription } = user;
 
-    return { token, name, email, subscription };
+    return { token, name, email, balance, subscription };
   }
 
   async logout(id: string) {
@@ -78,9 +78,9 @@ class AuthService {
       throw new CustomError(HttpCode.UNAUTHORIZED, "Not authorized");
     }
 
-    const { name, email, subscription } = user;
+    const { name, email, balance, subscription } = user;
 
-    return { name, email, subscription };
+    return { name, email, balance, subscription };
   }
 
   async getUser(email: string, password: string) {

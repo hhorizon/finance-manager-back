@@ -48,3 +48,11 @@ export const updateUserSubscription = async (
     { new: true },
   );
 };
+
+export const updateUserBalance = async (id: string, newBalance: number) => {
+  return await User.findByIdAndUpdate(
+    id,
+    { balance: newBalance },
+    { new: true },
+  );
+};

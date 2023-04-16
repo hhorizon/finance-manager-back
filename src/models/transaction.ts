@@ -21,6 +21,10 @@ const transactionSchema = new Schema<TransactionDocument>(
       type: Date,
       required: [true, "'Date' is required field"],
     },
+    balance: {
+      type: Number,
+      required: [true, "'Balance' is required field"],
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
