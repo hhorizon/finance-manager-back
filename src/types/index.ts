@@ -1,12 +1,20 @@
 import { ObjectId, Document } from "mongoose";
 import { JwtPayload } from "jsonwebtoken";
 
+export type Subscription = "starter" | "pro" | "business";
+export type TransactionsType = "incoming" | "spending";
+export type Categories = {
+  incoming: Array<string>;
+  spending: Array<string>;
+};
+
 export interface IUser {
   name: string;
   email: string;
   password: string;
   balance: number | null;
   subscription: Subscription;
+  categories: Categories;
   avatarURL: string;
   token: string | null;
   verify: boolean;
@@ -15,7 +23,7 @@ export interface IUser {
 }
 
 export interface ITransaction {
-  type: "incoming" | "spending";
+  type: TransactionsType;
   category: string;
   sum: number;
   date: Date;
@@ -35,5 +43,3 @@ export type UserCredential = {
 export type CustomJwtPayload = JwtPayload & {
   id: string;
 };
-
-export type Subscription = "starter" | "pro" | "business";

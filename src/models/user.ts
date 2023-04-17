@@ -1,6 +1,8 @@
 import { Schema, model } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
+
+import { defaultCategories } from "../libs/constants";
 import { UserDocument } from "../types";
 
 const userSchema = new Schema<UserDocument>(
@@ -26,6 +28,10 @@ const userSchema = new Schema<UserDocument>(
       type: String,
       enum: ["starter", "pro", "business"],
       default: "starter",
+    },
+    categories: {
+      type: { incoming: [String], spending: [String] },
+      default: defaultCategories,
     },
     avatarURL: {
       type: String,

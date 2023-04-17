@@ -23,14 +23,16 @@ export const verifyUser = async (req: Request, res: Response) => {
 };
 
 export const signIn = async (req: Request, res: Response) => {
-  const { token, name, email, balance, subscription } = await authService.login(
-    req.body,
-  );
+  const { token, name, email, balance, categories, subscription } =
+    await authService.login(req.body);
 
   return res.status(HttpCode.OK).json({
     status: "success",
     code: HttpCode.OK,
-    payload: { token, user: { name, email, balance, subscription } },
+    payload: {
+      token,
+      user: { name, email, balance, categories, subscription },
+    },
   });
 };
 
