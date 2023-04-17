@@ -15,8 +15,8 @@ import { IUser, UserCredential, UserDocument } from "../../types";
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY || "";
 
-const sender = new SenderNodemailer();
-const emailService = new EmailService(sender);
+// const sender = new SenderNodemailer();
+// const emailService = new EmailService(sender);
 
 class AuthService {
   async create(body: IUser) {
@@ -28,18 +28,18 @@ class AuthService {
 
     const newUser = await createUser(body);
 
-    try {
-      await emailService.sendMail(
-        newUser.email,
-        newUser.name,
-        newUser.verificationToken,
-      );
-    } catch (error) {
-      throw new CustomError(
-        HttpCode.SERVICE_UNAVAILABLE,
-        "Error sending email",
-      );
-    }
+    // try {
+    //   await emailService.sendMail(
+    //     newUser.email,
+    //     newUser.name,
+    //     newUser.verificationToken,
+    //   );
+    // } catch (error) {
+    //   throw new CustomError(
+    //     HttpCode.SERVICE_UNAVAILABLE,
+    //     "Error sending email",
+    //   );
+    // }
 
     return {
       name: newUser.name,
@@ -134,19 +134,19 @@ class AuthService {
       );
     }
 
-    try {
-      await emailService.sendMail(
-        user.email,
-        user.name,
-        user.verificationToken,
-      );
-    } catch (error) {
-      console.log(error);
-      throw new CustomError(
-        HttpCode.SERVICE_UNAVAILABLE,
-        "Error sending email",
-      );
-    }
+    // try {
+    //   await emailService.sendMail(
+    //     user.email,
+    //     user.name,
+    //     user.verificationToken,
+    //   );
+    // } catch (error) {
+    //   console.log(error);
+    //   throw new CustomError(
+    //     HttpCode.SERVICE_UNAVAILABLE,
+    //     "Error sending email",
+    //   );
+    // }
   }
 
   generateToken(user: UserDocument) {
