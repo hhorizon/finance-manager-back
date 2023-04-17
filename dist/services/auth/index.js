@@ -14,13 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const users_1 = require("../../repository/users");
-const index_1 = __importDefault(require("../email/index"));
-const nodemailerSender_1 = __importDefault(require("../email/senders/nodemailerSender"));
+// import EmailService from "../email/index";
+// import SenderNodemailer from "../email/senders/nodemailerSender";
 const constants_1 = require("../../libs/constants");
 const middlewares_1 = require("../../middlewares");
 const SECRET_KEY = process.env.JWT_SECRET_KEY || "";
-const sender = new nodemailerSender_1.default();
-const emailService = new index_1.default(sender);
+// const sender = new SenderNodemailer();
+// const emailService = new EmailService(sender);
 class AuthService {
     create(body) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -29,12 +29,18 @@ class AuthService {
                 throw new middlewares_1.CustomError(constants_1.HttpCode.CONFLICT, "Email in use");
             }
             const newUser = yield (0, users_1.createUser)(body);
-            try {
-                yield emailService.sendMail(newUser.email, newUser.name, newUser.verificationToken);
-            }
-            catch (error) {
-                throw new middlewares_1.CustomError(constants_1.HttpCode.SERVICE_UNAVAILABLE, "Error sending email");
-            }
+            // try {
+            //   await emailService.sendMail(
+            //     newUser.email,
+            //     newUser.name,
+            //     newUser.verificationToken,
+            //   );
+            // } catch (error) {
+            //   throw new CustomError(
+            //     HttpCode.SERVICE_UNAVAILABLE,
+            //     "Error sending email",
+            //   );
+            // }
             return {
                 name: newUser.name,
                 email: newUser.email,
@@ -109,13 +115,19 @@ class AuthService {
             if (user && user.verify) {
                 throw new middlewares_1.CustomError(constants_1.HttpCode.BAD_REQUEST, "Verification has already been passed");
             }
-            try {
-                yield emailService.sendMail(user.email, user.name, user.verificationToken);
-            }
-            catch (error) {
-                console.log(error);
-                throw new middlewares_1.CustomError(constants_1.HttpCode.SERVICE_UNAVAILABLE, "Error sending email");
-            }
+            // try {
+            //   await emailService.sendMail(
+            //     user.email,
+            //     user.name,
+            //     user.verificationToken,
+            //   );
+            // } catch (error) {
+            //   console.log(error);
+            //   throw new CustomError(
+            //     HttpCode.SERVICE_UNAVAILABLE,
+            //     "Error sending email",
+            //   );
+            // }
         });
     }
     generateToken(user) {

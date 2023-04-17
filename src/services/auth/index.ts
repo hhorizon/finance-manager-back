@@ -7,8 +7,8 @@ import {
   updateVerifyUser,
   updateUserToken,
 } from "../../repository/users";
-import EmailService from "../email/index";
-import SenderNodemailer from "../email/senders/nodemailerSender";
+// import EmailService from "../email/index";
+// import SenderNodemailer from "../email/senders/nodemailerSender";
 import { HttpCode } from "../../libs/constants";
 import { CustomError } from "../../middlewares";
 import { IUser, UserCredential, UserDocument } from "../../types";
