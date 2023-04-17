@@ -19,5 +19,5 @@ export const transactionSchema = Joi.object({
     .required()
     .messages({ "any.required": "missing required date field" }),
 
-  comment: Joi.string(),
+  comment: Joi.string().allow(""),
 });

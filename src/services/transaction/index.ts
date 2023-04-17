@@ -54,6 +54,13 @@ class TransactionService {
     if (!transaction) {
       throw new CustomError(HttpCode.NOT_FOUND, "Not found");
     }
+    const newBalance =
+      transaction.type === "incoming"
+        ? Number(user.balance) - transaction.sum
+        : Number(user.balance) + transaction.sum;
+
+    await updateUserBalance(user._id, newBalance);
+
     return transaction;
   }
 }
