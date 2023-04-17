@@ -4,7 +4,7 @@
   "private": true,
   "main": "dist/server.js",
   "scripts": {
-    "start": "tsc && cross-env NODE_ENV=production node -r dotenv/config dist/server.js",
+    "start": "cross-env NODE_ENV=production node -r dotenv/config dist/server.js",
     "dev": "nodemon --exec npx ts-node -r dotenv/config src/server.ts",
     "lint": "eslint **/*.js",
     "lint:fix": "eslint --fix **/*.js"
