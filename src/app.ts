@@ -11,7 +11,7 @@ const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
-// app.use(limiter(15 * 60 * 1000, 100));
+app.use(limiter(15 * 60 * 1000, 100));
 app.use(helmet());
 app.use(logger(formatsLogger));
 app.use(express.static("public"));
