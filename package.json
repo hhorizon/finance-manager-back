@@ -5,6 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "start": "node dist/server.js",
+    "postinstall": "tsc",
     "build": "tsc",
     "dev": "nodemon --exec npx ts-node -r dotenv/config src/server.ts",
     "lint": "eslint **/*.js",
