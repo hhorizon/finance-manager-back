@@ -4,6 +4,7 @@ class EmailService {
   sender: any;
   baseUrl: string;
   mailgen: any;
+
   constructor(sender: any) {
     this.sender = sender;
     this.baseUrl = process.env.BASE_URL || "";
@@ -15,7 +16,8 @@ class EmailService {
       },
     });
   }
-  createEmailTemplate(username: string, token: string) {
+
+  private createEmailTemplate(username: string, token: string) {
     const email = {
       body: {
         name: username,
@@ -34,6 +36,7 @@ class EmailService {
     };
     return this.mailgen.generate(email);
   }
+
   async sendMail(email: string, username: string, token: string) {
     const emailtemplate = this.createEmailTemplate(username, token);
     const mailOptions = {

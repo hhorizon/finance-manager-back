@@ -3,7 +3,9 @@ import authService from "../../services/auth";
 import { HttpCode } from "../../libs/constants";
 
 export const signUp = async (req: Request, res: Response) => {
-  const user = await authService.create(req.body);
+  const { body } = req;
+
+  const user = await authService.create(body);
 
   return res
     .status(HttpCode.CREATED)
@@ -11,9 +13,9 @@ export const signUp = async (req: Request, res: Response) => {
 };
 
 export const verifyUser = async (req: Request, res: Response) => {
-  const verificationToken = req.params.verificationToken;
+  const { params } = req;
 
-  await authService.verifyUser(verificationToken);
+  await authService.verifyUser(params.verificationToken);
 
   return res.status(HttpCode.OK).json({
     status: "success",
@@ -23,31 +25,35 @@ export const verifyUser = async (req: Request, res: Response) => {
 };
 
 export const signIn = async (req: Request, res: Response) => {
-  const { token, name, email, balance, categories, subscription } =
-    await authService.login(req.body);
+  const { body } = req;
+
+  const userData = await authService.login(body);
 
   return res.status(HttpCode.OK).json({
     status: "success",
     code: HttpCode.OK,
-    payload: {
-      token,
-      user: { name, email, balance, categories, subscription },
-    },
+    payload: userData,
+  });
+};
+
+export const getCurrent = async (req: Request, res: Response) => {
+  const { user } = req;
+
+  const currentUser = await authService.current(user.id);
+
+  return res.status(HttpCode.OK).json({
+    status: "success",
+    code: HttpCode.OK,
+    payload: { user: currentUser },
   });
 };
 
 export const signOut = async (req: Request, res: Response) => {
-  await authService.logout(req.user.id);
+  const { user } = req;
+
+  await authService.logout(user.id);
 
   return res.status(HttpCode.NO_CONTENT).json();
-};
-
-export const getCurrent = async (req: Request, res: Response) => {
-  const user = await authService.current(req.user.id);
-
-  return res
-    .status(HttpCode.OK)
-    .json({ status: "success", code: HttpCode.OK, payload: { user } });
 };
 
 export const reverifyUser = async (req: Request, res: Response) => {
@@ -55,6 +61,7 @@ export const reverifyUser = async (req: Request, res: Response) => {
 
   await authService.reverifyUserEmail(email);
 
+  // TODO add htlm
   return res.status(HttpCode.OK).json({
     status: "success",
     code: HttpCode.OK,

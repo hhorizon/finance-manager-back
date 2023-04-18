@@ -5,9 +5,11 @@ import LocalStorage from "../../services/avatar/localStorage";
 import { HttpCode } from "../../libs/constants";
 
 export const updateUserSubscription = async (req: Request, res: Response) => {
+  const { body, user } = req;
+
   const { email, subscription } = await userService.updateSubscription(
-    req.user.id,
-    req.body.subscription,
+    user.id,
+    body.subscription,
   );
 
   return res.json({
@@ -18,7 +20,9 @@ export const updateUserSubscription = async (req: Request, res: Response) => {
 };
 
 export const updateAvatar = async (req: Request, res: Response) => {
-  const avatarService = new AvatarService(LocalStorage, req.file, req.user);
+  const { file, user } = req;
+
+  const avatarService = new AvatarService(LocalStorage, file, user);
 
   const avatarURL = await avatarService.update();
 
@@ -30,10 +34,9 @@ export const updateAvatar = async (req: Request, res: Response) => {
 };
 
 export const updateUserBalance = async (req: Request, res: Response) => {
-  const { balance } = await userService.updateBalance(
-    req.user.id,
-    req.body.balance,
-  );
+  const { body, user } = req;
+
+  const { balance } = await userService.updateBalance(user.id, body.balance);
 
   return res.json({
     status: "success",

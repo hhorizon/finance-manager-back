@@ -10,49 +10,65 @@ export const createUser = async (body: IUser) => {
 
 // find user
 export const findUserByEmail = async (email: string) => {
-  return await User.findOne({ email });
+  const user = await User.findOne({ email });
+
+  return user;
 };
 
-export const findUserById = async (id: string) => {
-  return await User.findById(id);
+export const findUserById = async (userId: string) => {
+  const user = await User.findById(userId);
+
+  return user;
 };
 
 export const findUserByVerificationToken = async (
   verificationToken: string,
 ) => {
-  return await User.findOne({ verificationToken });
+  const user = await User.findOne({ verificationToken });
+
+  return user;
 };
 
 // update user
-export const updateVerifyUser = async (id: string) => {
-  return await User.findByIdAndUpdate(id, {
+export const updateVerifyUser = async (userId: string) => {
+  const user = await User.findByIdAndUpdate(userId, {
     verify: true,
   });
+
+  return user;
 };
 
-export const updateUserToken = async (id: string, token: string | null) => {
-  return await User.findByIdAndUpdate(id, { token });
+export const updateUserToken = async (userId: string, token: string | null) => {
+  const user = await User.findByIdAndUpdate(userId, { token });
+
+  return user;
 };
 
-export const updateUserAvatar = async (id: string, avatarURL: string) => {
-  return await User.findByIdAndUpdate(id, { avatarURL });
+export const updateUserAvatar = async (userId: string, avatarURL: string) => {
+  const user = await User.findByIdAndUpdate(userId, { avatarURL });
+
+  return user;
 };
 
 export const updateUserSubscription = async (
-  id: string,
+  userId: string,
   newSubscription: Subscription,
 ) => {
-  return await User.findByIdAndUpdate(
-    id,
+  const user = await User.findByIdAndUpdate(
+    userId,
     { subscription: newSubscription },
     { new: true },
   );
+
+  return user;
 };
 
-export const updateUserBalance = async (id: string, newBalance: number) => {
-  return await User.findByIdAndUpdate(
-    id,
+export const updateUserBalance = async (userId: string, newBalance: number) => {
+  const user = await User.findByIdAndUpdate(
+    userId,
     { balance: newBalance },
     { new: true },
   );
+
+  return user;
 };

@@ -1,57 +1,64 @@
 import Transaction from "../../models/transaction";
-import { ITransaction, UserDocument } from "../../types";
+
+import { ITransaction, TransactionsType } from "../../types";
 
 // create transaction
-export const addTransaction = async (
-  body: ITransaction,
-  user: UserDocument,
-) => {
-  const result = await Transaction.create({
+export const addTransaction = async (body: ITransaction, userId: string) => {
+  const transaction = await Transaction.create({
     ...body,
-    owner: user.id,
+    owner: userId,
   });
 
-  return result;
+  return transaction;
 };
 
 // find transaction
 export const getTransactionById = async (
   transactionId: string,
-  user: UserDocument,
+  userId: string,
 ) => {
-  const result = await Transaction.findOne({
+  const transaction = await Transaction.findOne({
     _id: transactionId,
-    owner: user.id,
+    owner: userId,
   });
 
-  return result;
+  return transaction;
 };
 
-export const getAllTransactions = async (user: UserDocument, page: number) => {
-  const {
-    docs: transactions,
-    totalDocs: totalTransaction,
-    ...rest
-  } = await Transaction.paginate(
-    { owner: user.id },
-    { page, sort: { date: 1 } },
+export const getAllTransactions = async (userId: string, page: number) => {
+  const transactions = await Transaction.paginate(
+    { owner: userId },
+    { page, sort: { date: -1 } },
   );
 
-  const { balance } = user;
+  return transactions;
+};
 
-  return { balance, transactions, totalTransaction, ...rest };
+export const getTransactionsByTypeAndPeriod = async (
+  userId: string,
+  type: TransactionsType,
+  startDate: Date,
+  endDate: Date,
+) => {
+  const transactions = await Transaction.find({
+    owner: userId,
+    type,
+    date: { $gte: startDate, $lte: endDate },
+  }).sort({ date: -1 });
+
+  return transactions;
 };
 
 // update transaction
 export const updateTransaction = async (
   transactionId: string,
   body: ITransaction,
-  user: UserDocument,
+  userId: string,
 ) => {
-  const result = await Transaction.findOneAndUpdate(
+  const transaction = await Transaction.findOneAndUpdate(
     {
       _id: transactionId,
-      owner: user.id,
+      owner: userId,
     },
     {
       ...body,
@@ -59,18 +66,18 @@ export const updateTransaction = async (
     { new: true },
   );
 
-  return result;
+  return transaction;
 };
 
-// delete transaction
+// remove transaction
 export const removeTransaction = async (
   transactionId: string,
-  user: UserDocument,
+  userId: string,
 ) => {
-  const result = await Transaction.findOneAndRemove({
+  const transaction = await Transaction.findOneAndRemove({
     _id: transactionId,
-    owner: user.id,
+    owner: userId,
   });
 
-  return result;
+  return transaction;
 };

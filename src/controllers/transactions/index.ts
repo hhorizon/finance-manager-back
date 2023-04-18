@@ -4,6 +4,7 @@ import { HttpCode } from "../../libs/constants";
 
 export const addTransaction = async (req: Request, res: Response) => {
   const { body, user } = req;
+
   const transaction = await transactionService.create(body, user);
 
   return res.status(HttpCode.CREATED).json({
@@ -14,9 +15,12 @@ export const addTransaction = async (req: Request, res: Response) => {
 };
 
 export const getTransactionById = async (req: Request, res: Response) => {
-  const { transactionId } = req.params;
-  const { user } = req;
-  const transaction = await transactionService.getById(transactionId, user);
+  const { params, user } = req;
+
+  const transaction = await transactionService.getById(
+    params.transactionId,
+    user,
+  );
 
   return res.json({
     status: "success",
@@ -27,21 +31,21 @@ export const getTransactionById = async (req: Request, res: Response) => {
 
 export const getAllTransactions = async (req: Request, res: Response) => {
   const { query, user } = req;
-  const { page } = query as any;
-  const transactions = await transactionService.getAll(user, page);
+
+  const AllTransactionsData = await transactionService.getAll(user, query.page);
 
   return res.json({
     status: "success",
     code: HttpCode.OK,
-    payload: { ...transactions },
+    payload: AllTransactionsData,
   });
 };
 
 export const updateTransaction = async (req: Request, res: Response) => {
-  const { transactionId } = req.params;
-  const { body, user } = req;
+  const { user, params, body } = req;
+
   const transaction = await transactionService.update(
-    transactionId,
+    params.transactionId,
     body,
     user,
   );
@@ -54,9 +58,12 @@ export const updateTransaction = async (req: Request, res: Response) => {
 };
 
 export const removeTransaction = async (req: Request, res: Response) => {
-  const { transactionId } = req.params;
-  const { user } = req;
-  const transaction = await transactionService.remove(transactionId, user);
+  const { params, user } = req;
+
+  const transaction = await transactionService.remove(
+    params.transactionId,
+    user,
+  );
 
   return res.json({
     status: "success",

@@ -7,16 +7,16 @@ import {
   updateVerifyUser,
   updateUserToken,
 } from "../../repository/users";
-// import EmailService from "../email/index";
-// import SenderNodemailer from "../email/senders/nodemailerSender";
+import EmailService from "../email/index";
+import SenderNodemailer from "../email/senders/nodemailerSender";
 import { HttpCode } from "../../libs/constants";
 import { CustomError } from "../../middlewares";
-import { IUser, UserCredential, UserDocument } from "../../types";
+import { IUser, UserCredential } from "../../types";
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY || "";
 
-// const sender = new SenderNodemailer();
-// const emailService = new EmailService(sender);
+const sender = new SenderNodemailer();
+const emailService = new EmailService(sender);
 
 class AuthService {
   async create(body: IUser) {
@@ -26,62 +26,58 @@ class AuthService {
       throw new CustomError(HttpCode.CONFLICT, "Email in use");
     }
 
-    const newUser = await createUser(body);
+    const { email, name, subscription, avatarURL, verificationToken } =
+      await createUser(body);
 
-    // try {
-    //   await emailService.sendMail(
-    //     newUser.email,
-    //     newUser.name,
-    //     newUser.verificationToken,
-    //   );
-    // } catch (error) {
-    //   throw new CustomError(
-    //     HttpCode.SERVICE_UNAVAILABLE,
-    //     "Error sending email",
-    //   );
-    // }
+    try {
+      await emailService.sendMail(email, name, verificationToken);
+    } catch (error) {
+      throw new CustomError(
+        HttpCode.SERVICE_UNAVAILABLE,
+        "Error sending email",
+      );
+    }
 
     return {
-      name: newUser.name,
-      email: newUser.email,
-      subscription: newUser.subscription,
-      avatarURL: newUser.avatarURL,
+      name,
+      email,
+      subscription,
+      avatarURL,
     };
   }
 
-  async login({ email, password }: UserCredential) {
-    const user = await this.getUser(email, password);
+  async login(credential: UserCredential) {
+    const user = await this.getUser(credential.email, credential.password);
 
-    const token = this.generateToken(user);
+    const token = this.generateToken(user.id);
 
     await updateUserToken(user.id, token);
 
-    const { name, balance, categories, subscription } = user;
+    const { name, email, balance, subscription } = user;
 
-    return { token, name, email, balance, categories, subscription };
+    return { token, user: { name, email, balance, subscription } };
   }
 
-  async logout(id: string) {
-    const user = await findUserById(id);
+  async logout(userId: string) {
+    const user = await findUserById(userId);
 
     if (!user) {
       throw new CustomError(HttpCode.UNAUTHORIZED, "Not authorized");
     }
 
-    await updateUserToken(id, null);
+    await updateUserToken(userId, null);
   }
 
-  async current(id: string) {
-    const user = await findUserById(id);
+  async current(userId: string) {
+    const user = await findUserById(userId);
 
     if (!user) {
       throw new CustomError(HttpCode.UNAUTHORIZED, "Not authorized");
     }
 
-    const { name, email, balance, categories, subscription } = user;
-    console.log(email);
+    const { name, email, balance, subscription } = user;
 
-    return { name, email, balance, categories, subscription };
+    return { name, email, balance, subscription };
   }
 
   async getUser(email: string, password: string) {
@@ -104,6 +100,7 @@ class AuthService {
 
   async verifyUser(verificationToken: string) {
     const user = await findUserByVerificationToken(verificationToken);
+
     if (!user) {
       throw new CustomError(HttpCode.NOT_FOUND, "User not found");
     }
@@ -134,23 +131,22 @@ class AuthService {
       );
     }
 
-    // try {
-    //   await emailService.sendMail(
-    //     user.email,
-    //     user.name,
-    //     user.verificationToken,
-    //   );
-    // } catch (error) {
-    //   console.log(error);
-    //   throw new CustomError(
-    //     HttpCode.SERVICE_UNAVAILABLE,
-    //     "Error sending email",
-    //   );
-    // }
+    try {
+      await emailService.sendMail(
+        user.email,
+        user.name,
+        user.verificationToken,
+      );
+    } catch (error) {
+      throw new CustomError(
+        HttpCode.SERVICE_UNAVAILABLE,
+        "Error sending email",
+      );
+    }
   }
 
-  generateToken(user: UserDocument) {
-    const payload = { id: user.id };
+  generateToken(userId: string) {
+    const payload = { id: userId };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "2h" });
 
     return token;

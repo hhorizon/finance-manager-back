@@ -7,21 +7,21 @@ import { CustomError } from "../../middlewares";
 import { Subscription } from "../../types";
 
 class UserService {
-  async updateSubscription(id: string, newSubscription: Subscription) {
-    const user = await updateUserSubscription(id, newSubscription);
+  async updateSubscription(userId: string, newSubscription: Subscription) {
+    const user = await updateUserSubscription(userId, newSubscription);
 
     if (!user) {
-      throw new CustomError(HttpCode.NOT_FOUND, "Not found");
+      throw new CustomError(HttpCode.NOT_FOUND, "User not found");
     }
 
     return user;
   }
 
-  async updateBalance(id: string, newBalance: number) {
-    const user = await updateUserBalance(id, newBalance);
+  async updateBalance(userId: string, newBalance: number) {
+    const user = await updateUserBalance(userId, newBalance);
 
     if (!user) {
-      throw new CustomError(HttpCode.NOT_FOUND, "Not found");
+      throw new CustomError(HttpCode.NOT_FOUND, "User not found");
     }
 
     return user;

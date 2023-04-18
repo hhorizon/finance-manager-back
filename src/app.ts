@@ -5,6 +5,7 @@ import cors from "cors";
 import authRouter from "./routes/auth";
 import usersRouter from "./routes/users";
 import transactionRouter from "./routes/transactions";
+import statisticsRouter from "./routes/statistics";
 import { limiter } from "./middlewares";
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.json({ limit: 10000 }));
 app.use("/api/auth", authRouter);
 app.use("/api/user", usersRouter);
 app.use("/api/transactions", transactionRouter);
+app.use("/api/statistics", statisticsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });

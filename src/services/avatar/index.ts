@@ -5,6 +5,7 @@ class AvatarService {
   storage: any;
   pathFile: string;
 
+  // TODO typify req.file
   constructor(Storage: any, file: any, user: IUser) {
     this.storage = new Storage(file, user);
     this.pathFile = file.path;

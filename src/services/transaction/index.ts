@@ -12,54 +12,72 @@ import { ITransaction, UserDocument } from "../../types";
 
 class TransactionService {
   async create(body: ITransaction, user: UserDocument) {
-    const newBalance =
-      body.type === "incoming"
-        ? Number(user.balance) + body.sum
-        : Number(user.balance) - body.sum;
+    const { id, balance } = user;
+    const { type, sum } = body;
 
-    await updateUserBalance(user._id, newBalance);
+    const newBalance =
+      type === "incoming" ? Number(balance) + sum : Number(balance) - sum;
+
+    await updateUserBalance(id, newBalance);
 
     const transaction = await addTransaction(
       { ...body, balance: newBalance },
-      user,
+      id,
     );
 
     return transaction;
   }
 
   async getById(transactionId: string, user: UserDocument) {
-    const transaction = await getTransactionById(transactionId, user);
+    const transaction = await getTransactionById(transactionId, user.id);
+
     if (!transaction) {
-      throw new CustomError(HttpCode.NOT_FOUND, "Not found");
+      throw new CustomError(HttpCode.NOT_FOUND, "Transaction not found");
     }
+
     return transaction;
   }
 
-  async getAll(user: UserDocument, page: number) {
-    const transactions = await getAllTransactions(user, page);
+  // TODO typify req.query
+  async getAll(user: UserDocument, page: any) {
+    const { id, categories, balance } = user;
 
-    return transactions;
+    const { docs, totalDocs, ...rest } = await getAllTransactions(id, page);
+
+    return {
+      categories,
+      balance,
+      transactions: {
+        transactions: docs,
+        totalTransaction: totalDocs,
+        ...rest,
+      },
+    };
   }
 
   async update(transactionId: string, body: ITransaction, user: UserDocument) {
-    const transaction = await updateTransaction(transactionId, body, user);
+    const transaction = await updateTransaction(transactionId, body, user.id);
+
     if (!transaction) {
-      throw new CustomError(HttpCode.NOT_FOUND, "Not found");
+      throw new CustomError(HttpCode.NOT_FOUND, "Transaction not found");
     }
+
     return transaction;
   }
 
   async remove(transactionId: string, user: UserDocument) {
-    const transaction = await removeTransaction(transactionId, user);
+    const transaction = await removeTransaction(transactionId, user.id);
+
     if (!transaction) {
-      throw new CustomError(HttpCode.NOT_FOUND, "Not found");
+      throw new CustomError(HttpCode.NOT_FOUND, "Transaction not found");
     }
+
     const newBalance =
       transaction.type === "incoming"
         ? Number(user.balance) - transaction.sum
         : Number(user.balance) + transaction.sum;
 
-    await updateUserBalance(user._id, newBalance);
+    await updateUserBalance(user.id, newBalance);
 
     return transaction;
   }

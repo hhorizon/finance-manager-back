@@ -43,3 +43,10 @@ export type UserCredential = {
 export type CustomJwtPayload = JwtPayload & {
   id: string;
 };
+
+export type StatisticsByCategories = {
+  categories: {
+    [key: string]: number;
+  };
+  totalSum: number;
+};
