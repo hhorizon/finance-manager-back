@@ -6,7 +6,10 @@ export const transactionSchema = Joi.object({
     .required()
     .messages({ "any.required": "missing required name field" }),
 
-  category: Joi.string()
+  category: Joi.object({
+    name: Joi.string(),
+    color: Joi.string(),
+  })
     .required()
     .messages({ "any.required": "missing required category field" }),
 

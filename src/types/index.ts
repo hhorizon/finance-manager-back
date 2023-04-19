@@ -2,10 +2,14 @@ import { ObjectId, Document } from "mongoose";
 import { JwtPayload } from "jsonwebtoken";
 
 export type Subscription = "starter" | "pro" | "business";
+
 export type TransactionsType = "incoming" | "spending";
+
+export type Category = { name: string; color: string };
+
 export type Categories = {
-  incoming: Array<string>;
-  spending: Array<string>;
+  incoming: Array<Category>;
+  spending: Array<Category>;
 };
 
 export interface IUser {
@@ -24,7 +28,7 @@ export interface IUser {
 
 export interface ITransaction {
   type: TransactionsType;
-  category: string;
+  category: Category;
   sum: number;
   date: Date;
   balance: number;
@@ -45,8 +49,10 @@ export type CustomJwtPayload = JwtPayload & {
 };
 
 export type StatisticsByCategories = {
-  categories: {
-    [key: string]: number;
-  };
+  categories: Array<{
+    name: string;
+    sum: number;
+    color: string;
+  }>;
   totalSum: number;
 };

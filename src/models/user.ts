@@ -30,7 +30,10 @@ const userSchema = new Schema<UserDocument>(
       default: "starter",
     },
     categories: {
-      type: { incoming: [String], spending: [String] },
+      type: {
+        incoming: [{ name: String, color: String }],
+        spending: [{ name: String, color: String }],
+      },
       default: defaultCategories,
     },
     avatarURL: {
