@@ -12,11 +12,15 @@ const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
-app.use(limiter(15 * 60 * 1000, 100));
+// app.use(limiter(15 * 60 * 1000, 100));
 app.use(helmet());
 app.use(logger(formatsLogger));
 app.use(express.static("public"));
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  }),
+);
 app.use(express.json({ limit: 10000 }));
 
 app.use("/api/auth", authRouter);
