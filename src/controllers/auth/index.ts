@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import path from "path";
 import authService from "../../services/auth";
 import { HttpCode } from "../../libs/constants";
 
@@ -17,11 +18,11 @@ export const verifyUser = async (req: Request, res: Response) => {
 
   await authService.verifyUser(params.verificationToken);
 
-  return res.status(HttpCode.OK).json({
-    status: "success",
-    code: HttpCode.OK,
-    payload: { message: "Verification successful" },
-  });
+  res.sendFile(
+    path.join(__dirname + "../../../../public/pages/verifyUser.html"),
+  );
+
+  return res;
 };
 
 export const signIn = async (req: Request, res: Response) => {
