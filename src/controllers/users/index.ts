@@ -44,3 +44,15 @@ export const updateUserBalance = async (req: Request, res: Response) => {
     payload: { balance },
   });
 };
+
+export const updateUserCategories = async (req: Request, res: Response) => {
+  const { body, user } = req;
+
+  const categories = await userService.updateCategories(user.id, body);
+
+  return res.json({
+    status: "success",
+    code: HttpCode.OK,
+    payload: { categories },
+  });
+};

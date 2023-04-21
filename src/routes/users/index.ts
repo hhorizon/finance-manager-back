@@ -3,10 +3,12 @@ import {
   updateUserSubscription,
   updateAvatar,
   updateUserBalance,
+  updateUserCategories,
 } from "../../controllers/users";
 import {
   subscriprionSchema,
   balanceSchema,
+  categorySchema,
 } from "../../schemas/userValidationSchemes";
 import {
   errorWrapper,
@@ -38,6 +40,13 @@ router.patch(
   guard,
   validateBody(balanceSchema),
   errorWrapper(updateUserBalance),
+);
+
+router.patch(
+  "/categories",
+  guard,
+  validateBody(categorySchema),
+  errorWrapper(updateUserCategories),
 );
 
 export default router;

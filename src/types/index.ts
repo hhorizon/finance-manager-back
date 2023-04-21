@@ -56,3 +56,8 @@ export type StatisticsByCategories = {
   }>;
   totalSum: number;
 };
+
+export type AddCategoryBody = {
+  type: TransactionsType;
+  name: string;
+};

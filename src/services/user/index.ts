@@ -1,10 +1,12 @@
 import {
   updateUserSubscription,
   updateUserBalance,
+  updateUserCategories,
 } from "../../repository/users";
 import { HttpCode } from "../../libs/constants";
 import { CustomError } from "../../middlewares";
-import { Subscription } from "../../types";
+import { generateColor } from "../../utils";
+import { Subscription, AddCategoryBody } from "../../types";
 
 class UserService {
   async updateSubscription(userId: string, newSubscription: Subscription) {
@@ -25,6 +27,19 @@ class UserService {
     }
 
     return user;
+  }
+
+  async updateCategories(userId: string, newCategory: AddCategoryBody) {
+    const user = await updateUserCategories(userId, newCategory.type, {
+      name: newCategory.name,
+      color: generateColor(),
+    });
+
+    if (!user) {
+      throw new CustomError(HttpCode.NOT_FOUND, "User not found");
+    }
+
+    return user.categories;
   }
 }
 

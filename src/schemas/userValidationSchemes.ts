@@ -30,3 +30,13 @@ export const balanceSchema = Joi.object({
     .required()
     .messages({ "any.required": "missing required balance field" }),
 });
+
+export const categorySchema = Joi.object({
+  name: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required name field" }),
+  type: Joi.string()
+    .valid("incoming", "spending")
+    .required()
+    .messages({ "any.required": "missing required type field" }),
+});

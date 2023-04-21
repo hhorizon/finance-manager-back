@@ -1,5 +1,5 @@
 import User from "../../models/user";
-import { IUser, Subscription } from "../../types";
+import { IUser, Subscription, Category, TransactionsType } from "../../types";
 
 // create user
 export const createUser = async (body: IUser) => {
@@ -67,6 +67,20 @@ export const updateUserBalance = async (userId: string, newBalance: number) => {
   const user = await User.findByIdAndUpdate(
     userId,
     { balance: newBalance },
+    { new: true },
+  );
+
+  return user;
+};
+
+export const updateUserCategories = async (
+  userId: string,
+  type: TransactionsType,
+  newCategory: Category,
+) => {
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { $push: { [`categories.${type}`]: newCategory } },
     { new: true },
   );
 
