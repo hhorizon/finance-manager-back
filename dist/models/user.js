@@ -40,7 +40,10 @@ const userSchema = new mongoose_1.Schema({
         default: "starter",
     },
     categories: {
-        type: { incoming: [String], spending: [String] },
+        type: {
+            incoming: [{ name: String, color: String }],
+            spending: [{ name: String, color: String }],
+        },
         default: constants_1.defaultCategories,
     },
     avatarURL: {

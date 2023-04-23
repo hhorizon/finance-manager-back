@@ -12,23 +12,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const users_1 = require("../../repository/users");
 const constants_1 = require("../../libs/constants");
 const middlewares_1 = require("../../middlewares");
+const utils_1 = require("../../utils");
 class UserService {
-    updateSubscription(id, newSubscription) {
+    updateSubscription(userId, newSubscription) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield (0, users_1.updateUserSubscription)(id, newSubscription);
+            const user = yield (0, users_1.updateUserSubscription)(userId, newSubscription);
             if (!user) {
-                throw new middlewares_1.CustomError(constants_1.HttpCode.NOT_FOUND, "Not found");
+                throw new middlewares_1.CustomError(constants_1.HttpCode.NOT_FOUND, "User not found");
             }
             return user;
         });
     }
-    updateBalance(id, newBalance) {
+    updateBalance(userId, newBalance) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield (0, users_1.updateUserBalance)(id, newBalance);
+            const user = yield (0, users_1.updateUserBalance)(userId, newBalance);
             if (!user) {
-                throw new middlewares_1.CustomError(constants_1.HttpCode.NOT_FOUND, "Not found");
+                throw new middlewares_1.CustomError(constants_1.HttpCode.NOT_FOUND, "User not found");
             }
             return user;
+        });
+    }
+    updateCategories(userId, newCategory) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield (0, users_1.updateUserCategories)(userId, newCategory.type, {
+                name: newCategory.name,
+                color: (0, utils_1.generateColor)(),
+            });
+            if (!user) {
+                throw new middlewares_1.CustomError(constants_1.HttpCode.NOT_FOUND, "User not found");
+            }
+            return user.categories;
         });
     }
 }

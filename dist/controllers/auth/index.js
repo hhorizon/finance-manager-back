@@ -12,53 +12,55 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.reverifyUser = exports.getCurrent = exports.signOut = exports.signIn = exports.verifyUser = exports.signUp = void 0;
+exports.reverifyUser = exports.signOut = exports.getCurrent = exports.signIn = exports.verifyUser = exports.signUp = void 0;
+const path_1 = __importDefault(require("path"));
 const auth_1 = __importDefault(require("../../services/auth"));
 const constants_1 = require("../../libs/constants");
 const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield auth_1.default.create(req.body);
+    const { body } = req;
+    const user = yield auth_1.default.create(body);
     return res
         .status(constants_1.HttpCode.CREATED)
         .json({ status: "success", code: constants_1.HttpCode.CREATED, payload: { user } });
 });
 exports.signUp = signUp;
 const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const verificationToken = req.params.verificationToken;
-    yield auth_1.default.verifyUser(verificationToken);
-    return res.status(constants_1.HttpCode.OK).json({
-        status: "success",
-        code: constants_1.HttpCode.OK,
-        payload: { message: "Verification successful" },
-    });
+    const { params } = req;
+    yield auth_1.default.verifyUser(params.verificationToken);
+    res.sendFile(path_1.default.join(__dirname + "../../../../public/pages/verifyUser.html"));
+    return res;
 });
 exports.verifyUser = verifyUser;
 const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { token, name, email, balance, categories, subscription } = yield auth_1.default.login(req.body);
+    const { body } = req;
+    const userData = yield auth_1.default.login(body);
     return res.status(constants_1.HttpCode.OK).json({
         status: "success",
         code: constants_1.HttpCode.OK,
-        payload: {
-            token,
-            user: { name, email, balance, categories, subscription },
-        },
+        payload: userData,
     });
 });
 exports.signIn = signIn;
+const getCurrent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { user } = req;
+    const currentUser = yield auth_1.default.current(user.id);
+    return res.status(constants_1.HttpCode.OK).json({
+        status: "success",
+        code: constants_1.HttpCode.OK,
+        payload: { user: currentUser },
+    });
+});
+exports.getCurrent = getCurrent;
 const signOut = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield auth_1.default.logout(req.user.id);
+    const { user } = req;
+    yield auth_1.default.logout(user.id);
     return res.status(constants_1.HttpCode.NO_CONTENT).json();
 });
 exports.signOut = signOut;
-const getCurrent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield auth_1.default.current(req.user.id);
-    return res
-        .status(constants_1.HttpCode.OK)
-        .json({ status: "success", code: constants_1.HttpCode.OK, payload: { user } });
-});
-exports.getCurrent = getCurrent;
 const reverifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
     yield auth_1.default.reverifyUserEmail(email);
+    // TODO add htlm
     return res.status(constants_1.HttpCode.OK).json({
         status: "success",
         code: constants_1.HttpCode.OK,

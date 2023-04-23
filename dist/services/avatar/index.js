@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jimp_1 = __importDefault(require("jimp"));
 class AvatarService {
+    // TODO typify req.file
     constructor(Storage, file, user) {
         this.storage = new Storage(file, user);
         this.pathFile = file.path;

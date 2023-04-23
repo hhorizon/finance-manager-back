@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.balanceSchema = exports.emailSchema = exports.subscriprionSchema = exports.userSchema = void 0;
+exports.categorySchema = exports.balanceSchema = exports.emailSchema = exports.subscriprionSchema = exports.userSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
 exports.userSchema = joi_1.default.object({
     name: joi_1.default.string().min(3).max(24),
@@ -30,4 +30,13 @@ exports.balanceSchema = joi_1.default.object({
     balance: joi_1.default.number()
         .required()
         .messages({ "any.required": "missing required balance field" }),
+});
+exports.categorySchema = joi_1.default.object({
+    name: joi_1.default.string()
+        .required()
+        .messages({ "any.required": "missing required name field" }),
+    type: joi_1.default.string()
+        .valid("incoming", "spending")
+        .required()
+        .messages({ "any.required": "missing required type field" }),
 });

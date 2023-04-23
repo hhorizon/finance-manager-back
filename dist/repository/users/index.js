@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserBalance = exports.updateUserSubscription = exports.updateUserAvatar = exports.updateUserToken = exports.updateVerifyUser = exports.findUserByVerificationToken = exports.findUserById = exports.findUserByEmail = exports.createUser = void 0;
+exports.updateUserCategories = exports.updateUserBalance = exports.updateUserSubscription = exports.updateUserAvatar = exports.updateUserToken = exports.updateVerifyUser = exports.findUserByVerificationToken = exports.findUserById = exports.findUserByEmail = exports.createUser = void 0;
 const user_1 = __importDefault(require("../../models/user"));
 // create user
 const createUser = (body) => __awaiter(void 0, void 0, void 0, function* () {
@@ -22,37 +22,50 @@ const createUser = (body) => __awaiter(void 0, void 0, void 0, function* () {
 exports.createUser = createUser;
 // find user
 const findUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield user_1.default.findOne({ email });
+    const user = yield user_1.default.findOne({ email });
+    return user;
 });
 exports.findUserByEmail = findUserByEmail;
-const findUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield user_1.default.findById(id);
+const findUserById = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_1.default.findById(userId);
+    return user;
 });
 exports.findUserById = findUserById;
 const findUserByVerificationToken = (verificationToken) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield user_1.default.findOne({ verificationToken });
+    const user = yield user_1.default.findOne({ verificationToken });
+    return user;
 });
 exports.findUserByVerificationToken = findUserByVerificationToken;
 // update user
-const updateVerifyUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield user_1.default.findByIdAndUpdate(id, {
+const updateVerifyUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_1.default.findByIdAndUpdate(userId, {
         verify: true,
     });
+    return user;
 });
 exports.updateVerifyUser = updateVerifyUser;
-const updateUserToken = (id, token) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield user_1.default.findByIdAndUpdate(id, { token });
+const updateUserToken = (userId, token) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_1.default.findByIdAndUpdate(userId, { token });
+    return user;
 });
 exports.updateUserToken = updateUserToken;
-const updateUserAvatar = (id, avatarURL) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield user_1.default.findByIdAndUpdate(id, { avatarURL });
+const updateUserAvatar = (userId, avatarURL) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_1.default.findByIdAndUpdate(userId, { avatarURL });
+    return user;
 });
 exports.updateUserAvatar = updateUserAvatar;
-const updateUserSubscription = (id, newSubscription) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield user_1.default.findByIdAndUpdate(id, { subscription: newSubscription }, { new: true });
+const updateUserSubscription = (userId, newSubscription) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_1.default.findByIdAndUpdate(userId, { subscription: newSubscription }, { new: true });
+    return user;
 });
 exports.updateUserSubscription = updateUserSubscription;
-const updateUserBalance = (id, newBalance) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield user_1.default.findByIdAndUpdate(id, { balance: newBalance }, { new: true });
+const updateUserBalance = (userId, newBalance) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_1.default.findByIdAndUpdate(userId, { balance: newBalance }, { new: true });
+    return user;
 });
 exports.updateUserBalance = updateUserBalance;
+const updateUserCategories = (userId, type, newCategory) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_1.default.findByIdAndUpdate(userId, { $push: { [`categories.${type}`]: newCategory } }, { new: true });
+    return user;
+});
+exports.updateUserCategories = updateUserCategories;

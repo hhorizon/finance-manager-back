@@ -11,4 +11,5 @@ const router = express_1.default.Router();
 router.patch("/avatars", middlewares_1.guard, (0, middlewares_1.limiter)(15 * 60 * 1000, 5), middlewares_1.upload.single("avatar"), (0, middlewares_1.errorWrapper)(users_1.updateAvatar));
 router.patch("/subscription", middlewares_1.guard, (0, middlewares_1.validateBody)(userValidationSchemes_1.subscriprionSchema), (0, middlewares_1.errorWrapper)(users_1.updateUserSubscription));
 router.patch("/balance", middlewares_1.guard, (0, middlewares_1.validateBody)(userValidationSchemes_1.balanceSchema), (0, middlewares_1.errorWrapper)(users_1.updateUserBalance));
+router.patch("/categories", middlewares_1.guard, (0, middlewares_1.validateBody)(userValidationSchemes_1.categorySchema), (0, middlewares_1.errorWrapper)(users_1.updateUserCategories));
 exports.default = router;

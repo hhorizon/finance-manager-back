@@ -8,59 +8,56 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeTransaction = exports.updateTransaction = exports.getAllTransactions = exports.getTransactionById = exports.addTransaction = void 0;
+exports.removeTransaction = exports.updateTransaction = exports.getTransactionsByTypeAndPeriod = exports.getAllTransactions = exports.getTransactionById = exports.addTransaction = void 0;
 const transaction_1 = __importDefault(require("../../models/transaction"));
 // create transaction
-const addTransaction = (body, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield transaction_1.default.create(Object.assign(Object.assign({}, body), { owner: user.id }));
-    return result;
+const addTransaction = (body, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const transaction = yield transaction_1.default.create(Object.assign(Object.assign({}, body), { owner: userId }));
+    return transaction;
 });
 exports.addTransaction = addTransaction;
 // find transaction
-const getTransactionById = (transactionId, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield transaction_1.default.findOne({
+const getTransactionById = (transactionId, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const transaction = yield transaction_1.default.findOne({
         _id: transactionId,
-        owner: user.id,
+        owner: userId,
     });
-    return result;
+    return transaction;
 });
 exports.getTransactionById = getTransactionById;
-const getAllTransactions = (user, page) => __awaiter(void 0, void 0, void 0, function* () {
-    const _a = yield transaction_1.default.paginate({ owner: user.id }, { page, sort: { date: 1 } }), { docs: transactions, totalDocs: totalTransaction } = _a, rest = __rest(_a, ["docs", "totalDocs"]);
-    const { balance } = user;
-    return Object.assign({ balance, transactions, totalTransaction }, rest);
+const getAllTransactions = (userId, page) => __awaiter(void 0, void 0, void 0, function* () {
+    const transactions = yield transaction_1.default.paginate({ owner: userId }, { page, sort: { date: -1 } });
+    return transactions;
 });
 exports.getAllTransactions = getAllTransactions;
+const getTransactionsByTypeAndPeriod = (userId, type, startDate, endDate) => __awaiter(void 0, void 0, void 0, function* () {
+    const transactions = yield transaction_1.default.find({
+        owner: userId,
+        type,
+        date: { $gte: startDate, $lte: endDate },
+    }).sort({ date: -1 });
+    return transactions;
+});
+exports.getTransactionsByTypeAndPeriod = getTransactionsByTypeAndPeriod;
 // update transaction
-const updateTransaction = (transactionId, body, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield transaction_1.default.findOneAndUpdate({
+const updateTransaction = (transactionId, body, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const transaction = yield transaction_1.default.findOneAndUpdate({
         _id: transactionId,
-        owner: user.id,
+        owner: userId,
     }, Object.assign({}, body), { new: true });
-    return result;
+    return transaction;
 });
 exports.updateTransaction = updateTransaction;
-// delete transaction
-const removeTransaction = (transactionId, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield transaction_1.default.findOneAndRemove({
+// remove transaction
+const removeTransaction = (transactionId, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const transaction = yield transaction_1.default.findOneAndRemove({
         _id: transactionId,
-        owner: user.id,
+        owner: userId,
     });
-    return result;
+    return transaction;
 });
 exports.removeTransaction = removeTransaction;

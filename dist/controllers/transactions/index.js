@@ -26,9 +26,8 @@ const addTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.addTransaction = addTransaction;
 const getTransactionById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { transactionId } = req.params;
-    const { user } = req;
-    const transaction = yield transaction_1.default.getById(transactionId, user);
+    const { params, user } = req;
+    const transaction = yield transaction_1.default.getById(params.transactionId, user);
     return res.json({
         status: "success",
         code: constants_1.HttpCode.OK,
@@ -38,19 +37,17 @@ const getTransactionById = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.getTransactionById = getTransactionById;
 const getAllTransactions = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { query, user } = req;
-    const { page } = query;
-    const transactions = yield transaction_1.default.getAll(user, page);
+    const AllTransactionsData = yield transaction_1.default.getAll(user, query.page);
     return res.json({
         status: "success",
         code: constants_1.HttpCode.OK,
-        payload: Object.assign({}, transactions),
+        payload: AllTransactionsData,
     });
 });
 exports.getAllTransactions = getAllTransactions;
 const updateTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { transactionId } = req.params;
-    const { body, user } = req;
-    const transaction = yield transaction_1.default.update(transactionId, body, user);
+    const { user, params, body } = req;
+    const transaction = yield transaction_1.default.update(params.transactionId, body, user);
     return res.json({
         status: "success",
         code: constants_1.HttpCode.OK,
@@ -59,9 +56,8 @@ const updateTransaction = (req, res) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.updateTransaction = updateTransaction;
 const removeTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { transactionId } = req.params;
-    const { user } = req;
-    const transaction = yield transaction_1.default.remove(transactionId, user);
+    const { params, user } = req;
+    const transaction = yield transaction_1.default.remove(params.transactionId, user);
     return res.json({
         status: "success",
         code: constants_1.HttpCode.OK,

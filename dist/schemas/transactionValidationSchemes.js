@@ -10,7 +10,10 @@ exports.transactionSchema = joi_1.default.object({
         .valid("incoming", "spending")
         .required()
         .messages({ "any.required": "missing required name field" }),
-    category: joi_1.default.string()
+    category: joi_1.default.object({
+        name: joi_1.default.string(),
+        color: joi_1.default.string(),
+    })
         .required()
         .messages({ "any.required": "missing required category field" }),
     sum: joi_1.default.number()

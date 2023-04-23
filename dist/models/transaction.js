@@ -12,7 +12,7 @@ const transactionSchema = new mongoose_1.Schema({
         required: [true, "'Type' is required field"],
     },
     category: {
-        type: String,
+        type: { name: String, color: String },
         required: [true, "'Category' is required field"],
     },
     sum: {

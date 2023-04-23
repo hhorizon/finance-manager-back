@@ -12,13 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserBalance = exports.updateAvatar = exports.updateUserSubscription = void 0;
+exports.updateUserCategories = exports.updateUserBalance = exports.updateAvatar = exports.updateUserSubscription = void 0;
 const user_1 = __importDefault(require("../../services/user"));
 const avatar_1 = __importDefault(require("../../services/avatar"));
 const localStorage_1 = __importDefault(require("../../services/avatar/localStorage"));
 const constants_1 = require("../../libs/constants");
 const updateUserSubscription = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, subscription } = yield user_1.default.updateSubscription(req.user.id, req.body.subscription);
+    const { body, user } = req;
+    const { email, subscription } = yield user_1.default.updateSubscription(user.id, body.subscription);
     return res.json({
         status: "success",
         code: constants_1.HttpCode.OK,
@@ -27,7 +28,8 @@ const updateUserSubscription = (req, res) => __awaiter(void 0, void 0, void 0, f
 });
 exports.updateUserSubscription = updateUserSubscription;
 const updateAvatar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const avatarService = new avatar_1.default(localStorage_1.default, req.file, req.user);
+    const { file, user } = req;
+    const avatarService = new avatar_1.default(localStorage_1.default, file, user);
     const avatarURL = yield avatarService.update();
     return res.json({
         status: "success",
@@ -37,7 +39,8 @@ const updateAvatar = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.updateAvatar = updateAvatar;
 const updateUserBalance = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { balance } = yield user_1.default.updateBalance(req.user.id, req.body.balance);
+    const { body, user } = req;
+    const { balance } = yield user_1.default.updateBalance(user.id, body.balance);
     return res.json({
         status: "success",
         code: constants_1.HttpCode.OK,
@@ -45,3 +48,13 @@ const updateUserBalance = (req, res) => __awaiter(void 0, void 0, void 0, functi
     });
 });
 exports.updateUserBalance = updateUserBalance;
+const updateUserCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { body, user } = req;
+    const categories = yield user_1.default.updateCategories(user.id, body);
+    return res.json({
+        status: "success",
+        code: constants_1.HttpCode.OK,
+        payload: { categories },
+    });
+});
+exports.updateUserCategories = updateUserCategories;
