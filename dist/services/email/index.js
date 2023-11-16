@@ -31,7 +31,7 @@ class EmailService {
                 name: username,
                 intro: "Welcome to my pet project! Look at the code carefully and have fun.",
                 action: {
-                    instructions: "To get started with Min.Manager, please click here:",
+                    instructions: "To get started with Fin.Manager, please click here:",
                     button: {
                         color: "#22BC66",
                         text: "Confirm your account",
@@ -48,7 +48,7 @@ class EmailService {
             const emailtemplate = this.createEmailTemplate(username, token);
             const mailOptions = {
                 to: email,
-                subject: "Welcome to Min.Manager",
+                subject: "Welcome to Fin.Manager",
                 html: emailtemplate,
             };
             const result = yield this.sender.send(mailOptions);

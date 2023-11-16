@@ -41,7 +41,7 @@ class EmailService {
     const emailtemplate = this.createEmailTemplate(username, token);
     const mailOptions = {
       to: email,
-      subject: "Welcome to Min.Manager",
+      subject: "Welcome to Fin.Manager",
       html: emailtemplate,
     };
     const result = await this.sender.send(mailOptions);

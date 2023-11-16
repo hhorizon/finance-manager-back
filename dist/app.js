@@ -14,16 +14,14 @@ const statistics_1 = __importDefault(require("./routes/statistics"));
 const middlewares_1 = require("./middlewares");
 const app = (0, express_1.default)();
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
+const corsOriginUrl = process.env.CORS_ORIGIN_URL;
 app.use((0, middlewares_1.limiter)(15 * 60 * 1000, 100));
 app.use((0, helmet_1.default)());
 app.use((0, morgan_1.default)(formatsLogger));
 app.use(express_1.default.static("public"));
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000",
-//   }),
-// );
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: corsOriginUrl,
+}));
 app.use(express_1.default.json({ limit: 10000 }));
 app.use("/api/auth", auth_1.default);
 app.use("/api/user", users_1.default);
