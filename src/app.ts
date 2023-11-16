@@ -11,12 +11,17 @@ import { limiter } from "./middlewares";
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
+const corsOriginUrl = process.env.CORS_ORIGIN_URL;
 
 app.use(limiter(15 * 60 * 1000, 100));
 app.use(helmet());
 app.use(logger(formatsLogger));
 app.use(express.static("public"));
-app.use(cors());
+app.use(
+  cors({
+    origin: corsOriginUrl,
+  }),
+);
 app.use(express.json({ limit: 10000 }));
 
 app.use("/api/auth", authRouter);
